@@ -285,7 +285,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Pallete.firstSuggestionBoxColor,
+                            backgroundColor: Pallete.firstSuggestionBoxColor
                           ),
                           onPressed:()async{
                             final speech =  await openAIService.isArtPromptAPI(chatx.text);
