@@ -18,7 +18,7 @@ class OpenAIService {
          "model" : "gpt-3.5-turbo",
          "messages": [
            { "role": "user",
-             "content": "Does this message want to generate an ai picture , image , art or anything similar? $prompt . Simply answer with a yes or no.",
+             "content": "I want to differentiate between questions i require dall-e api for image generation or chatgpt api for text generation .So help me to differentiate if i ask you a question which requires image generation , image creation ,art or similar then just reply 'dall' else if i ask about anything to explain then reply 'chat'. Question number one ${prompt} . ONLY REPLY DALL OR CHAT one word answer nothing else accepted",
            }
          ],
        }),
@@ -30,10 +30,12 @@ class OpenAIService {
 
        switch(content)
            {
-         case 'Yes':
-         case 'yes':
-         case 'Yes.':
-         case 'yes.':
+         case 'Dall':
+         case 'dall':
+         case 'Dall.':
+         case 'dall.':
+         case 'DALL.':
+         case 'DALL':
 
         final res =   await dallEAPI(prompt);
         return res;
