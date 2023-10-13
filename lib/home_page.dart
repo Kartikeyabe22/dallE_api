@@ -15,6 +15,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  TextEditingController chatx = TextEditingController();
   final speechToText = SpeechToText();
   final flutterTts = FlutterTts();
   String lastWords = '';
@@ -23,6 +24,7 @@ class _HomePageState extends State<HomePage> {
   String? generatedImageUrl;
   int start= 200;
   int delay = 200;
+
   @override
   void initState()  {
     // TODO: implement initState
@@ -72,6 +74,7 @@ class _HomePageState extends State<HomePage> {
   }
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title: BounceInDown(child: Text('Allen')),
@@ -246,6 +249,84 @@ class _HomePageState extends State<HomePage> {
          child: Icon(speechToText.isListening?Icons.stop:Icons.mic),
         ),
       ),
+      bottomSheet:Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Pallete.firstSuggestionBoxColor,
+            ),
+          onPressed: () {
+
+        //  Navigator.push(context,MaterialPageRoute(builder: (context)=>BottomSheetExample(),));
+          showModalBottomSheet<void>(
+            context: context,
+            builder: (BuildContext context) {
+              return SingleChildScrollView(
+                child: Container(
+                  height: 350,
+
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                //      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+
+                      Container(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextField(
+
+                            controller: chatx,
+                            decoration: InputDecoration(hintText: '     Ask Your Doubt'),
+                            keyboardType: TextInputType.multiline,
+
+                          ),
+                        ),
+                      ),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Pallete.firstSuggestionBoxColor,
+                          ),
+                          onPressed:()async{
+                            final speech =  await openAIService.isArtPromptAPI(chatx.text);
+                            if(speech.contains('https'))
+                            {
+                              generatedImageUrl=speech;
+                              generatedContent=null;
+                              setState(() {
+
+                              });
+                            }
+                            else{
+                              generatedImageUrl=null;
+                              generatedContent=speech;
+                              setState(() {
+
+                              });
+
+                            }
+
+                            print(speech);
+                          },
+                          child:  Icon(
+
+                            Icons.anchor_sharp ,
+                            size: 25,
+
+                          ),
+                        ),
+
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
+          );
+           },
+        child: Icon(Icons.border_bottom_outlined),
+        ),
+      ) ,
     );
   }
 }
